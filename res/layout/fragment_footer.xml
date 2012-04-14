@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	android:orientation="horizontal" android:layout_width="fill_parent"
+	android:layout_height="50sp" android:gravity="center">
+	
+	<ImageView android:src="@android:drawable/ic_menu_share" android:layout_width="wrap_content" android:layout_height="wrap_content" />
+	<View android:layout_width="8sp" android:layout_height="1sp" />
+
+	<ImageView android:src="@android:drawable/ic_menu_preferences" android:layout_width="wrap_content" android:layout_height="wrap_content" />
+	<!-- <View android:layout_width="8sp" android:layout_height="1sp" />-->
+	
+
+</LinearLayout>

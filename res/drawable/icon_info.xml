@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<scale xmlns:android="http://schemas.android.com/apk/res/android"
+    android:drawable="@drawable/icon_appartments_w120"
+    android:scaleHeight="60%"
+    android:scaleWidth="60%" >
+
+</scale>

@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center_horizontal"
+    android:orientation="vertical" >
+
+    <TextView
+        style="@style/style_text_header"
+        android:layout_width="fill_parent"
+        android:gravity="center_horizontal"
+        android:layout_margin="3dp"
+        android:text="Logga in" />
+
+    <TextView
+        style="@style/style_text_login_label"
+        android:text="Person-/Organisationsnr:" />
+    
+    <TextView
+        android:textAppearance="@android:style/TextAppearance.Holo.Small"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="(ÅÅMMDDXXXX)" />
+
+    <EditText
+        android:id="@+id/login_input_user"
+        style="@style/style_text_login_input"
+        android:inputType="number" />
+
+    <TextView
+        android:layout_marginTop="16dp"
+        style="@style/style_text_login_label"
+        android:text="PIN-kod:" />
+
+    <EditText
+        android:id="@+id/login_input_pin"
+        style="@style/style_text_login_input"
+        android:inputType="numberPassword" />
+
+    <Button
+        android:id="@+id/login_btn_ok"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="2dp"
+        android:text="OK" />
+
+</LinearLayout>

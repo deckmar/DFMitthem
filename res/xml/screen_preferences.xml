@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android" >
+
+    <PreferenceCategory android:title="Inloggning" >
+        <EditTextPreference
+            android:dependency="pref_remember"
+            android:key="pref_user"
+            android:numeric="integer"
+            android:summary="Användarnamnet för mitthem.se"
+            android:title="Person-/Organisationsnr." />
+        <EditTextPreference
+            android:dependency="pref_remember"
+            android:key="pref_pass"
+            android:numeric="integer"
+            android:password="true"
+            android:summary="Din PIN-kod för mitthem.se"
+            android:title="PIN-kod" />
+
+        <CheckBoxPreference
+            android:defaultValue="true"
+            android:key="pref_remember"
+            android:shouldDisableView="false"
+            android:title="Kom ihåg mina uppgifter" />
+        <CheckBoxPreference
+            android:defaultValue="true"
+            android:dependency="pref_remember"
+            android:key="pref_autologin"
+            android:title="Logga in automatiskt" />
+    </PreferenceCategory>
+
+</PreferenceScreen>
