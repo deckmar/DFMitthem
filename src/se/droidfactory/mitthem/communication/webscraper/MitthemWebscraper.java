@@ -1,8 +1,10 @@
-package se.droidfactory.mitthem.communication;
+package se.droidfactory.mitthem.communication.webscraper;
 
 import java.io.IOException;
 
-public interface IMitthemWebScraper {
+import se.droidfactory.mitthem.communication.LaundryDataFetchStatusListener;
+
+public interface MitthemWebscraper {
 
 	public abstract boolean login(String username, String password) throws IOException;
 

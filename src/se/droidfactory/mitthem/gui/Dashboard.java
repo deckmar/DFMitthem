@@ -3,8 +3,8 @@ package se.droidfactory.mitthem.gui;
 import java.io.IOException;
 
 import se.droidfactory.mitthem.R;
-import se.droidfactory.mitthem.communication.IMitthemWebScraper;
-import se.droidfactory.mitthem.communication.MitthemWebScraperImpl;
+import se.droidfactory.mitthem.communication.webscraper.MitthemWebscraper;
+import se.droidfactory.mitthem.communication.webscraper.MitthemWebscraperImpl;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;

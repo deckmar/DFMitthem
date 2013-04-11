@@ -1,8 +1,8 @@
 package se.droidfactory.mitthem.gui;
 
 import se.droidfactory.mitthem.R;
-import se.droidfactory.mitthem.communication.IMitthemWebScraper;
-import se.droidfactory.mitthem.communication.MitthemWebScraperImpl;
+import se.droidfactory.mitthem.communication.webscraper.MitthemWebscraper;
+import se.droidfactory.mitthem.communication.webscraper.MitthemWebscraperImpl;
 import android.app.ActionBar;
 import android.app.Activity;
 import android.content.Intent;
@@ -14,7 +14,7 @@ import android.widget.TextView;
 
 public class MyInfo extends Activity {
 
-	IMitthemWebScraper mitthemWebScraper;
+	MitthemWebscraper mitthemWebScraper;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -23,7 +23,7 @@ public class MyInfo extends Activity {
 		ActionBar actionBar = getActionBar();
 		actionBar.setDisplayHomeAsUpEnabled(true);
 
-		this.mitthemWebScraper = MitthemWebScraperImpl.getInstance();
+		this.mitthemWebScraper = MitthemWebscraperImpl.getInstance();
 
 		((TextView) findViewById(R.id.dash_userinfo_name)).setText(this.mitthemWebScraper.getUserFullname());
 		((TextView) findViewById(R.id.dash_userinfo_address)).setText(this.mitthemWebScraper.getUserStreet() + "\n"

@@ -3,8 +3,8 @@ package se.droidfactory.mitthem.gui;
 import java.io.IOException;
 
 import se.droidfactory.mitthem.R;
-import se.droidfactory.mitthem.communication.IMitthemWebScraper;
-import se.droidfactory.mitthem.communication.MitthemWebScraperImpl;
+import se.droidfactory.mitthem.communication.webscraper.MitthemWebscraper;
+import se.droidfactory.mitthem.communication.webscraper.MitthemWebscraperImpl;
 import se.droidfactory.mitthem.helpers.DateNameHelper;
 import android.app.Activity;
 import android.app.ProgressDialog;
@@ -26,7 +26,7 @@ public class Login extends Activity implements OnClickListener {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		IMitthemWebScraper mitthem = MitthemWebScraperImpl.getInstance();
+		MitthemWebscraper mitthem = MitthemWebscraperImpl.getInstance();
 		
 		DateNameHelper.getInstance().initialize(this);
 
@@ -35,7 +35,7 @@ public class Login extends Activity implements OnClickListener {
 		 * login Also, auto-login if possible and preferable
 		 */
 
-		if (mitthem.getState().equals(MitthemWebScraperImpl.STATE_LOGGED_IN)) {
+		if (mitthem.getState().equals(MitthemWebscraperImpl.STATE_LOGGED_IN)) {
 			switchToDashboard();
 		} else {
 			setContentView(R.layout.screen_login);
@@ -88,7 +88,7 @@ public class Login extends Activity implements OnClickListener {
 
 		private String username, password;
 		private boolean loginSuccess;
-		private IMitthemWebScraper mitthemWebScraper;
+		private MitthemWebscraper mitthemWebScraper;
 		private ProgressDialog progressDlg;
 
 		@Override
@@ -109,7 +109,7 @@ public class Login extends Activity implements OnClickListener {
 			this.password = params[1];
 
 			int tries = 3;
-			this.mitthemWebScraper = MitthemWebScraperImpl.getInstance();
+			this.mitthemWebScraper = MitthemWebscraperImpl.getInstance();
 
 			while (tries-- > 0) {
 				try {

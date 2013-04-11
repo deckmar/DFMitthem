@@ -1,4 +1,4 @@
-package se.droidfactory.mitthem.communication;
+package se.droidfactory.mitthem.communication.webscraper;
 
 import java.io.IOException;
 import java.sql.Date;
@@ -13,10 +13,11 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
+import se.droidfactory.mitthem.communication.LaundryDataFetchStatusListener;
 import se.droidfactory.mitthem.managers.LaundryBookingManager;
 import se.droidfactory.mitthem.models.LaundrySlot;
 
-public class MitthemWebScraperImpl implements IMitthemWebScraper {
+public class MitthemWebscraperImpl implements MitthemWebscraper {
 
 	public static final String STATE_LOGGED_OUT = "STATE_LOGGED_OUT";
 	public static final String STATE_LOGGED_IN = "STATE_LOGGED_IN";
@@ -30,11 +31,10 @@ public class MitthemWebScraperImpl implements IMitthemWebScraper {
 	private LaundryBookingManager laundryBookingManager;
 	private String userFullname, userStreet, userPostnr, userCity, userPhoneHome, userPhoneWork, userMobile, userEmail;
 
-	public MitthemWebScraperImpl() {
+	public MitthemWebscraperImpl() {
 		this.laundryBookingManager = LaundryBookingManager.getInstance();
 	}
 
-	@Override
 	public boolean login(String username, String password) throws IOException {
 		try {
 
@@ -121,7 +121,7 @@ public class MitthemWebScraperImpl implements IMitthemWebScraper {
 		}
 	}
 
-	@Override
+	
 	public String getUserFullname() {
 		return userFullname;
 	}
@@ -154,7 +154,7 @@ public class MitthemWebScraperImpl implements IMitthemWebScraper {
 		return userEmail;
 	}
 
-	@Override
+	
 	public boolean fetchLaudryData(LaundryDataFetchStatusListener listener) throws IOException {
 		if (this.docMyPage == null || this.getState().equals(STATE_LOGGED_OUT))
 			return false;
@@ -173,6 +173,12 @@ public class MitthemWebScraperImpl implements IMitthemWebScraper {
 
 			if (listener != null)
 				listener.laundryStatusUpdate(++step, totalSteps);
+			
+			/**
+			 * Check if there's a link to book laundry
+			 */
+			
+			doc.select("a[href*=laundrybooking.aspx?user]").size();
 
 			String nextUrl = "http://www.mitthem.se/res/themes/mitthem/pages/"
 					+ doc.select("a[href*=laundrybooking.aspx?user]").first().attr("href");
@@ -355,7 +361,7 @@ public class MitthemWebScraperImpl implements IMitthemWebScraper {
 		this.state = state;
 	}
 
-	@Override
+	
 	public String getState() {
 		/*
 		 * If the last login was longer than 5 minutes ago, then say we are
@@ -371,11 +377,11 @@ public class MitthemWebScraperImpl implements IMitthemWebScraper {
 	/*
 	 * Singleton pattern
 	 */
-	private static volatile IMitthemWebScraper singletonInstance;
+	private static volatile MitthemWebscraper singletonInstance;
 
-	public static IMitthemWebScraper getInstance() {
+	public static MitthemWebscraper getInstance() {
 		if (singletonInstance == null) {
-			singletonInstance = new MitthemWebScraperImpl();
+			singletonInstance = new MitthemWebscraperImpl();
 		}
 		return singletonInstance;
 	}

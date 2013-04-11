@@ -7,8 +7,8 @@ import java.util.Comparator;
 import java.util.Date;
 
 import se.droidfactory.mitthem.R;
-import se.droidfactory.mitthem.communication.IMitthemWebScraper;
-import se.droidfactory.mitthem.communication.MitthemWebScraperImpl;
+import se.droidfactory.mitthem.communication.webscraper.MitthemWebscraper;
+import se.droidfactory.mitthem.communication.webscraper.MitthemWebscraperImpl;
 import se.droidfactory.mitthem.gui.Laundry;
 import se.droidfactory.mitthem.helpers.DateNameHelper;
 import se.droidfactory.mitthem.managers.LaundryBookingManager;
@@ -137,8 +137,8 @@ public class LaundryFragmentDay extends Fragment implements OnClickListener {
 			LaundrySlot slot = (LaundrySlot) v.getTag();
 			Date date = slot.getLaundryDate();
 
-			IMitthemWebScraper mitt = MitthemWebScraperImpl.getInstance();
-			if (mitt.getState().equals(MitthemWebScraperImpl.STATE_LOGGED_IN)) {
+			MitthemWebscraper mitt = MitthemWebscraperImpl.getInstance();
+			if (mitt.getState().equals(MitthemWebscraperImpl.STATE_LOGGED_IN)) {
 
 				new AlertDialog.Builder(getActivity())
 						.setTitle("Bekräfta bokning")
@@ -194,7 +194,7 @@ public class LaundryFragmentDay extends Fragment implements OnClickListener {
 
 		@Override
 		protected Boolean doInBackground(LaundrySlot... params) {
-			IMitthemWebScraper mitt = MitthemWebScraperImpl.getInstance();
+			MitthemWebscraper mitt = MitthemWebscraperImpl.getInstance();
 			LaundrySlot slot = params[0];
 
 			boolean result = mitt.executeBookingAction(slot.getActionUrl());

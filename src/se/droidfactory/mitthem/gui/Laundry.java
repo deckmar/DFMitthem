@@ -6,9 +6,9 @@ import java.util.Date;
 import java.util.List;
 
 import se.droidfactory.mitthem.R;
-import se.droidfactory.mitthem.communication.IMitthemWebScraper;
 import se.droidfactory.mitthem.communication.LaundryDataFetchStatusListener;
-import se.droidfactory.mitthem.communication.MitthemWebScraperImpl;
+import se.droidfactory.mitthem.communication.webscraper.MitthemWebscraper;
+import se.droidfactory.mitthem.communication.webscraper.MitthemWebscraperImpl;
 import se.droidfactory.mitthem.gui.fragments.laundry.LaundryFragmentDay;
 import se.droidfactory.mitthem.helpers.DateNameHelper;
 import se.droidfactory.mitthem.managers.LaundryBookingManager;
@@ -246,7 +246,7 @@ public class Laundry extends Activity {
 
 		@Override
 		protected Boolean doInBackground(String... params) {
-			IMitthemWebScraper scraper = MitthemWebScraperImpl.getInstance();
+			MitthemWebscraper scraper = MitthemWebscraperImpl.getInstance();
 			boolean fetchSuccess = false;
 
 			int tries = 3;
