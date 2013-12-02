@@ -130,48 +130,84 @@ public class LaundryFragmentDay extends Fragment implements OnClickListener {
 		}
 	}
 
-	@Override
-	public void onClick(View v) {
-		switch (v.getId()) {
-		case R.id.laund_state_img:
-			LaundrySlot slot = (LaundrySlot) v.getTag();
-			Date date = slot.getLaundryDate();
+    @Override
+    public void onClick(View view) {
 
-			MitthemWebscraper mitt = MitthemWebscraperImpl.getInstance();
-			if (mitt.getState().equals(MitthemWebscraperImpl.STATE_LOGGED_IN)) {
+        // Only handle clicks on the state image for now
+        if (view.getId() != R.id.laund_state_img) return;
 
-				new AlertDialog.Builder(getActivity())
-						.setTitle("Bekräfta bokning")
-						.setMessage(
-								String.format("Vill du boka denna tvättid?\n\nDatum: %s %d %s (%s)\nTid: %s\nRum: %d",
-										dateHelp.weekDayNames.get(date.getDay()), date.getDate(),
-										dateHelp.monthNames.get(date.getMonth()),
-										LaundrySlot.getTimeIntervalString(slot.getLaundryTimeInterval()),
-										slot.getLaundryRoom()))
-						.setPositiveButton("Boka", new AlertDialog.OnClickListener() {
-							@Override
-							public void onClick(DialogInterface dialog, int which) {
-							}
-						});
+        if (isLoggedIn()) {
+            LaundrySlot slot = (LaundrySlot) view.getTag();
+            handleBookingClick(slot);
+        } else {
+            Toast.makeText(getActivity(), "Not logged in. (Debug) Restart app for now.", Toast.LENGTH_LONG).show();
+        }
+    }
 
-				String actionUrl = slot.getActionUrl();
-				switch (slot.getSlotState()) {
-				case LaundrySlot.STATUS_SLOT_FREE:
-					new ActionUrlAsyncTask("Bokar tvättid..", "Vänta medan tvättiden bokas.").execute(slot);
-					break;
-				case LaundrySlot.STATUS_SLOT_BOOKED_ME:
-					new ActionUrlAsyncTask("Avbokar tvättid..", "Vänta medan tvättiden avbokas.").execute(slot);
-					break;
-				}
+    private boolean isLoggedIn() {
+        return MitthemWebscraperImpl.getInstance().getState()
+                .equals(MitthemWebscraperImpl.STATE_LOGGED_IN);
+    }
 
-			} else {
+    private void handleBookingClick(LaundrySlot slot) {
 
-				Toast.makeText(getActivity(), "Not logged in. (Debug) Restart app for now.", Toast.LENGTH_LONG).show();
-			}
-			break;
-		}
+        switch (slot.getSlotState()) {
+            case LaundrySlot.STATUS_SLOT_FREE:
+                showBookingConfirmDialog(slot);
+                break;
+            case LaundrySlot.STATUS_SLOT_BOOKED_ME:
+                showBookingCancelDialog(slot);
+                break;
+        }
+    }
 
-	}
+    private void showBookingConfirmDialog(final LaundrySlot slot) {
+
+        getGenericAlertDialogBuilder()
+                .setTitle("Bekrï¿½fta bokning")
+                .setMessage("Vill du boka denna tvï¿½ttid?\n\n" +  getSlotTimeInfo(slot))
+                .setPositiveButton("Boka", new AlertDialog.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        new ActionUrlAsyncTask("Bokar tvï¿½ttid..", "Vï¿½nta medan tvï¿½ttiden bokas.").execute(slot);
+                    }
+                }).show();
+    }
+
+    private void showBookingCancelDialog(final LaundrySlot slot) {
+
+        getGenericAlertDialogBuilder()
+                .setTitle("Bekrï¿½fta avbokning")
+                .setMessage("Vill du avboka denna tvï¿½ttid?\n\n" + getSlotTimeInfo(slot))
+                .setPositiveButton("Avboka", new AlertDialog.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        new ActionUrlAsyncTask("Avbokar tvï¿½ttid..", "Vï¿½nta medan tvï¿½ttiden avbokas.").execute(slot);
+                    }
+                }).show();
+    }
+
+    private AlertDialog.Builder getGenericAlertDialogBuilder() {
+
+        return new AlertDialog.Builder(getActivity())
+                .setNegativeButton("Avbryt", new AlertDialog.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        // User cancelled
+                    }
+                });
+    }
+
+    private String getSlotTimeInfo(LaundrySlot slot) {
+        Date date = slot.getLaundryDate();
+
+        return String.format("Datum: %s %d %s\nTid: %s\nRum: %d",
+                dateHelp.weekDayNames.get(date.getDay()),
+                date.getDate(),
+                dateHelp.monthNames.get(date.getMonth()),
+                LaundrySlot.getTimeIntervalString(slot.getLaundryTimeInterval()),
+                slot.getLaundryRoom());
+    }
 
 	private class ActionUrlAsyncTask extends AsyncTask<LaundrySlot, Integer, Boolean> {
 
@@ -211,7 +247,7 @@ public class LaundryFragmentDay extends Fragment implements OnClickListener {
 				new AlertDialog.Builder(getActivity())
 						.setTitle("Misslyckades")
 						.setMessage(
-								"Ett fel inträffade med bokningen. Prova senare. Det kan hjälpa att starta om appen.")
+								"Ett fel intrï¿½ffade med bokningen. Prova senare. Det kan hjï¿½lpa att starta om appen.")
 						.create().show();
 			} else {
 				((Laundry) getActivity()).refreshLaundryData();
